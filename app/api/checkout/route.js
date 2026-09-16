@@ -52,6 +52,21 @@ export async function POST(request) {
 
     const payload = checkoutSchema.parse(await request.json());
 
+    if (process.env.DEMO_MODE !== "false") {
+      const orderNumber = `KAL-DEMO-${Date.now().toString().slice(-8)}`;
+      return Response.json({
+        ok: true,
+        demo: true,
+        order: {
+          orderNumber,
+          totalPaise: 0,
+          paymentMethod: payload.paymentMethod,
+          status: payload.paymentMethod === "cod" ? "cod_pending_verification" : "paid"
+        },
+        note: "Demo mode: no real payment, database order, WhatsApp message, or shipping label was created."
+      }, { status: 201 });
+    }
+
     // Idempotency prevents duplicate orders when clients retry due to network instability.
     const existing = await db.query(
       `SELECT order_number, razorpay_order_id, total_paise, payment_method, status

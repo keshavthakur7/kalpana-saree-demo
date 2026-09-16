@@ -132,3 +132,8 @@ npm run catalog:refresh
 This loads the 10 Kalpana Saree demo products and their local `/public/products/...` images.
 
 The code also maps known demo product names to local images as a safety fallback, so older records do not break `next/image`.
+
+
+## Client demo mode
+
+The public demo defaults to `DEMO_MODE` unless it is explicitly set to `false`. In demo mode, browsing uses the bundled 10-saree catalog and local images, and checkout is simulated without PostgreSQL, Razorpay, WhatsApp, or Shiprocket side effects. For production, set `DEMO_MODE=false` and provide real provider/database credentials.

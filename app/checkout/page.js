@@ -111,7 +111,7 @@ export default function CheckoutPage() {
                 ? " We’ll verify your COD order on WhatsApp before dispatch."
                 : " Payment confirmation will be reflected after Razorpay verification."}
             </p>
-            <div className="mt-8 text-2xl font-semibold">{formatINR(order.totalPaise)}</div>
+            <div className="mt-8 text-2xl font-semibold">{formatINR(total)}</div>
             <Link href="/" className="mt-8 inline-block rounded-full bg-royal-burgundy px-7 py-3 text-sm text-white">Continue shopping</Link>
           </div>
         </div>

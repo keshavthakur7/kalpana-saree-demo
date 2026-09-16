@@ -5,6 +5,7 @@ import HeroSlideshow from "../components/HeroSlideshow";
 import ProductCard from "../components/ProductCard";
 import { db } from "../lib/db";
 import { cacheGet, cacheSet } from "../lib/redis";
+import { DEMO_PRODUCTS } from "../lib/demoProducts";
 
 const categoryTiles = [
   { name: "Silk Sarees", value: "Silk", image: "/products/kanjivaram-silk.jpg" },
@@ -17,6 +18,8 @@ const categoryTiles = [
 ];
 
 async function getFeaturedProducts() {
+  if (process.env.DEMO_MODE !== "false") return DEMO_PRODUCTS;
+
   const cacheKey = "catalog:featured:v3";
   const cached = await cacheGet(cacheKey);
   if (cached) return cached;

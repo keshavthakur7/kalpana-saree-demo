@@ -6,6 +6,7 @@ import { db } from "../../lib/db";
 import { cacheGet, cacheSet } from "../../lib/redis";
 import { formatINR } from "../../lib/format";
 import { getProductImage } from "../../lib/productImage";
+import { DEMO_PRODUCTS } from "../../lib/demoProducts";
 
 const CATEGORY_OPTIONS = [
   ["All Sarees", ""],
@@ -30,6 +31,25 @@ async function getProducts({ category, fabric, q, min, max, sort }) {
     max: Number.isFinite(max) ? max : 0,
     sort: sort || "featured"
   };
+
+  if (process.env.DEMO_MODE !== "false") {
+    let rows = DEMO_PRODUCTS.filter((product) => {
+      if (normalized.category && product.category !== normalized.category) return false;
+      if (normalized.fabric && product.fabric !== normalized.fabric) return false;
+      if (normalized.q) {
+        const haystack = `${product.name} ${product.fabric} ${product.category}`.toLowerCase();
+        if (!haystack.includes(normalized.q.toLowerCase())) return false;
+      }
+      if (normalized.min > 0 && product.price_paise < normalized.min * 100) return false;
+      if (normalized.max > 0 && product.price_paise > normalized.max * 100) return false;
+      return true;
+    });
+
+    if (normalized.sort === "price-low") rows.sort((a,b) => a.price_paise - b.price_paise);
+    if (normalized.sort === "price-high") rows.sort((a,b) => b.price_paise - a.price_paise);
+    if (normalized.sort === "featured") rows.sort((a,b) => Number(b.featured) - Number(a.featured));
+    return rows.slice(0, 48);
+  }
 
   const cacheKey = `catalog:shop:v2:${JSON.stringify(normalized)}`;
   const cached = await cacheGet(cacheKey);
