@@ -1,0 +1,46 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: #fbf9f5;
+  --foreground: #1c1c1c;
+  --burgundy: #4a0e17;
+  --gold: #b78a42;
+  --cream: #fbf9f5;
+}
+
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), system-ui, sans-serif;
+}
+::selection { background: var(--burgundy); color: #fff; }
+input {
+  min-height: 52px;
+  width: 100%;
+  border: 1px solid rgba(28, 28, 28, .1);
+  border-radius: 16px;
+  padding: 0 16px;
+  background: #fff;
+  outline: none;
+  font-size: 14px;
+}
+input:focus {
+  border-color: rgba(74,14,23,.55);
+  box-shadow: 0 0 0 3px rgba(74,14,23,.06);
+}
+.luxury-grid {
+  background-image:
+    linear-gradient(rgba(74,14,23,.035) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(74,14,23,.035) 1px, transparent 1px);
+  background-size: 36px 36px;
+}
+.hero-overlay {
+  background: linear-gradient(90deg, rgba(25,5,9,.78) 0%, rgba(25,5,9,.33) 52%, rgba(25,5,9,.08) 100%);
+}
+.product-image { transition: transform .75s cubic-bezier(.2,.7,.2,1); }
+.group:hover .product-image { transform: scale(1.045); }
